@@ -7,14 +7,7 @@ const errorController = require('./controllers/error');
 
 const app = express();
 
-const db = require('./util/database');
-db.execute('SELET * FROM products').then((res) =>{
-    console.log(res); 
-
-})
-.catch((err) =>{
-    console.log(err)
-})
+const seq = require('./models/product');
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -30,4 +23,13 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-app.listen(4000);
+seq.synch()
+.then((res) =>{
+    console.log(res)
+    app.listen(4000);
+})
+.catth((err)=>{
+    console.log(err)
+})
+
+
